@@ -14,12 +14,39 @@ Game.prototype.splitBoardIntoRows = function() {
   return nestArray
 }
 
+Game.prototype.render = function() {
+  var string = "<table id='board'>"
+  for (var x=0; x<this.objectBoard.length; x++){
+    string += "<tr class='row'>"
+    for (var y=0; y<this.objectBoard[x].length;y++){
+      string += "<td class='cell "
+      if (this.objectBoard[x][y]["status"] === "unclicked"){
+        string += "unclicked' "
+      } else if (this.objectBoard[x][y]["status"] === "clicked") {
+        string += "clicked' "
+      } else if (this.objectBoard[x][y]["status"] === "flagged"){
+        string += "flagged' "
+      }
+      string += "id ='" + x + '' + y + "'></td>"
+    };
+    string += "</tr>"
+  };
+  string += "</table>"
+  return string
+}
+
+Game.prototype.click = function(cell){}
+
+Game.prototype.flag = function(cell){}
+
 
 var placeBombs = function(num) {
-  var boardWithBombs = new Array(num).join('0').split('')
+  console.log(num)
+  var boardWithBombs = Array.apply(null, new Array(num)).map(Number.prototype.valueOf, 0);
+  console.log(boardWithBombs)
   for (var i = 0; i < Math.floor(num/3); i++) {
     var bombLocation = Math.floor((Math.random() * num))
-      boardWithBombs[bombLocation] = "1"
+      boardWithBombs[bombLocation] = 1
   };
   return boardWithBombs.join('')
 }
@@ -27,7 +54,7 @@ var placeBombs = function(num) {
 var hashify = function(board) {
   var containerArray = []
   for (var i = 0; i < board.length; i++) {
-    if (board[i] === "1") {
+    if (board[i] === 1) {
       var cell = {status: "unclicked", bomb: true}
       containerArray.push(cell)
     } else {

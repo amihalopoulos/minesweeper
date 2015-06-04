@@ -9,7 +9,13 @@ td {
   height: 100px;
   text-align: center;
   border:1px solid #ccc;
-  border-bottom:2px solid #bbb;
+  border-bottom:4px solid #bbb;
   border-top:1px solid #ddd;
   border-radius:10px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.bomb {
+  background-image: url('http://image.shutterstock.com/display_pic_with_logo/1222298/134991800/stock-vector-comic-book-bomb-explosion-vector-illustration-134991800.jpg')
 }

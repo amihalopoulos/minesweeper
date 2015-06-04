@@ -10,15 +10,16 @@ $(document).ready(function() {
     switch (event.which) {
         case 1:
             if (game.click(this.id)){
-              alert("its a bomb!")
+              $(this).css("background-image", bombImage)
             } else {
               addClickClass(this)
+              $(this).css("background-color", "#bbb")
             }
-            // $('#container').html(game.render())
             break;
         case 3:
             addFlagClass(this)
             game.flag(this.id)
+            $(this).css("background-image", flagImage)
             // $('#container').html(game.render())
             break;
     }
@@ -40,3 +41,8 @@ var addFlagClass = function(cell){
     $(cell).addClass("flagged")
   }
 }
+var flagImage = "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyD6AtiHqeH_sAfNNvTr1xq4xtTPOY7AYa2YD7C3gFtK9fLf1C')"
+
+var bombImage = "url('http://image.shutterstock.com/display_pic_with_logo/1222298/134991800/stock-vector-comic-book-bomb-explosion-vector-illustration-134991800.jpg')"
+
+

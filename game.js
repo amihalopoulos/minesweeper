@@ -40,6 +40,8 @@ Game.prototype.click = function(cell){
   y = cell[1]
   this.objectBoard[x][y]["status"] = "clicked"
   return this.objectBoard[x][y]["bomb"]
+  //if true, return array of all bomb cells
+  //else, count the amount of bombs surrounding that area
 }
 
 Game.prototype.flag = function(cell){

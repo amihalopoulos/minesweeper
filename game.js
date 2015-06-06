@@ -81,7 +81,11 @@ Game.prototype.getSurroundingBombCount = function(cell) {
   if (this.inBounds(x-1, y-1) && board[x-1][y-1]["bomb"]) {
     count+=1
   }
-  return count
+  if (count === 0){
+    //recursively click surrounding boxes
+  } else {
+    return count
+  }
 }
 
 Game.prototype.inBounds = function(x,y) {

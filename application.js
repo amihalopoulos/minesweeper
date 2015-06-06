@@ -1,6 +1,5 @@
 $(document).ready(function() {
   game = new Game(9);
-  // console.log(game.objectBoard)
   $('#container').html(game.render())
   $('.cell').click(function(){
 
@@ -14,6 +13,7 @@ $(document).ready(function() {
             } else {
               addClickClass(this)
               $(this).css("background-color", "#bbb")
+              $(this).html(game.getSurroundingBombCount(this.id))
             }
             break;
         case 3:

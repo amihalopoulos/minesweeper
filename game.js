@@ -50,6 +50,45 @@ Game.prototype.flag = function(cell){
   this.objectBoard[x][y]["status"] = "flagged"
 }
 
+Game.prototype.getBombCells = function() {}
+
+Game.prototype.getSurroundingBombCount = function(cell) {
+  var board = this.objectBoard
+  var x = parseInt(cell[0])
+  var y = parseInt(cell[1])
+  var count = 0
+  if (this.inBounds(x+1, y) && board[x+1][y]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x+1, y-1) && board[x+1][y-1]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x+1, y+1) && board[x+1][y+1]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x, y+1) && board[x][y+1]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x, y-1) && board[x][y-1]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x-1, y) && board[x-1][y]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x-1, y+1) && board[x-1][y+1]["bomb"]) {
+    count+=1
+  }
+  if (this.inBounds(x-1, y-1) && board[x-1][y-1]["bomb"]) {
+    count+=1
+  }
+  return count
+}
+
+Game.prototype.inBounds = function(x,y) {
+  if (x < Math.sqrt(this.size) && x >= 0 && y < Math.sqrt(this.size) && y >= 0) {
+    return true
+  } else {return false}
+}
 
 var placeBombs = function(num) {
   var boardWithBombs = Array.apply(null, new Array(num)).map(Number.prototype.valueOf, 0);

@@ -83,15 +83,16 @@ Game.prototype = {
   getNeighbors: function(index) {
     var x = parseInt(index[0])
     var y = parseInt(index[1])
+    var self = this
     var directions = [[1,0], [1,1], [0,1], [-1,1], [-1, 0], [-1,-1], [0, -1], [1,-1]]
     var neighbors = []
-    for (var i = 0; i < directions.length; i++) {
-      var neighborX = x + directions[i][0]
-      var neighborY = y +directions[i][1]
-      if (this.inBounds(neighborX, neighborY) && !this.objectBoard[neighborX][neighborY]["bomb"] && this.objectBoard[neighborX][neighborY]["status"] === "unclicked"){
-        neighbors.push([neighborX, neighborY])
+    directions.forEach(function(d) {
+      var nX = x + d[0]
+      var nY = y + d[1]
+      if (self.inBounds(nX, nY) && !self.objectBoard[nX][nY]["bomb"] && self.objectBoard[nX][nY]["status"] === "unclicked"){
+        neighbors.push([nX, nY])
       }
-    };
+    })
     return neighbors
   },
   splitBoardIntoRows: function() {

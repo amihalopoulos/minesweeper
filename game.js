@@ -16,7 +16,10 @@ Game.prototype = {
           if (this.objectBoard[x][y]["status"] === "unclicked"){
             string += "unclicked' id ='" + x + '' + y + "'>"
           } else if (this.objectBoard[x][y]["status"] === "clicked") {
-            string += "clicked' id ='" + x + '' + y + "'>" + this.getSurroundingBombCount([x,y])
+            string += "clicked' id ='" + x + '' + y + "'>"
+            if (this.getSurroundingBombCount([x,y]) !== 0) {
+              string += this.getSurroundingBombCount([x,y])
+            }
           } else if (this.objectBoard[x][y]["status"] === "flagged"){
             string += "flagged' id ='" + x + '' + y + "'>"
           }
@@ -53,14 +56,17 @@ Game.prototype = {
       this.gameOver = true
       //show all bombs, alert, refresh
     } else if (self.getSurroundingBombCount(cell) === 0){
-      console.log(this.getNeighbors(cell))
       this.getNeighbors(cell).forEach(function(n) {self.click(n)})
     };
   },
   flag: function(cell) {
     x = cell[0]
     y = cell[1]
-    this.objectBoard[x][y]["status"] = "flagged"
+    if (this.objectBoard[x][y]["status"] !== "flagged") {
+      this.objectBoard[x][y]["status"] = "flagged"
+    } else {
+      this.objectBoard[x][y]["status"] = "unclicked"
+    };
   },
   getSurroundingBombCount: function(cell) {
     var x = parseInt(cell[0])
@@ -103,6 +109,24 @@ Game.prototype = {
       nestArray.push(row)
     }
     return nestArray
+  },
+  checkForWin: function() {
+    var self = this
+    var bombs = []
+    var flags = []
+    for (var x = 0; x < self.objectBoard.length; x++) {
+      for (var y = 0; y < self.objectBoard[x].length; y++) {
+        self.objectBoard[x][y]
+        if (self.objectBoard[x][y]["bomb"]) {
+          bombs.push([x,y])
+        };
+        if (self.objectBoard[x][y]["status"] === "flagged") {
+          flags.push[x,y]
+        };
+      };
+
+    };
+    return bombs.equals(flags)
   }
 }
 
@@ -127,4 +151,23 @@ var hashify = function(board) {
     }
   };
   return containerArray
+}
+
+Array.prototype.equals = function (array) {
+    if (!array)
+        return false;
+
+    if (this.length != array.length)
+        return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            if (!this[i].equals(array[i]))
+                return false;
+        }
+        else if (this[i] != array[i]) {
+            return false;
+        }
+    }
+    return true;
 }

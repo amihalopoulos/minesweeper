@@ -11,6 +11,9 @@ $(document).ready(function() {
         game.flag(this.id)
         break;
     }
+    if (game.checkForWin()){
+      alert("YOU WIN!")
+    }
     $('#container').html(game.render())
   });
 });

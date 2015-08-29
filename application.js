@@ -1,30 +1,41 @@
 $(document).ready(function() {
-  game = new Game(9);
+  game = new Game(81);
   $('#container').html(game.render())
-  $('.cell').click(function(){
 
-  })
-
-  $('.cell').mousedown(function(event) {
+  $('body').on('mousedown', '.cell', function(event) {
     switch (event.which) {
-        case 1:
-            if (game.click(this.id)){
-              $(this).css("background-image", bombImage)
-            } else {
-              addClickClass(this)
-              $(this).css("background-color", "#bbb")
-              $(this).html(game.getSurroundingBombCount(this.id))
-            }
-            break;
-        case 3:
-            addFlagClass(this)
-            game.flag(this.id)
-            $(this).css("background-image", flagImage)
-            // $('#container').html(game.render())
-            break;
+      case 1:
+        // press(this)
+        game.click(this.id)
+        $('#container').html(game.render())
+        break;
+      case 3:
+        game.flag(this.id)
+        $('#container').html(game.render())
+        break;
     }
+  });
 });
-})
+
+var press = function(pressed) {
+  if (game.objectBoard[pressed.id[0]][pressed.id[1]]["bomb"]){
+    $(pressed).css("background-image", bombImage)
+    alert("KABBOOOYYYYYAAAAA")
+    location.reload();
+  }
+  else if (game.getSurroundingBombCount(pressed.id) == 0){
+    addClickClass(pressed)
+    var neighbors = game.getNeighbors(pressed.id)
+    for (var i = 0; i < neighbors.length; i++) {
+      var n = neighbors[i].join('')
+      console.log(n)
+      press(document.getElementById(n))
+    };
+  }
+  else {
+    addClickClass(pressed)
+  }
+}
 
 var addBombClass = function(cell) {
   $(cell).removeClass("unclicked flagged")
@@ -34,6 +45,8 @@ var addBombClass = function(cell) {
 var addClickClass = function(cell) {
   $(cell).removeClass("unclicked flagged")
   $(cell).addClass("clicked")
+  $(cell).css("background-color", "#bbb")
+  $(cell).html(game.getSurroundingBombCount(cell.id))
 }
 
 var addFlagClass = function(cell){

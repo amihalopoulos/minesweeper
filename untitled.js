@@ -1,6 +1,5 @@
 function Game(size) {
   this.size = size
-  this.gameOver = false
   this.board = placeBombs(this.size)
   this.objectBoard = this.splitBoardIntoRows()
 }
@@ -17,53 +16,44 @@ Game.prototype.splitBoardIntoRows = function() {
 
 Game.prototype.render = function() {
   var string = "<table id='board'>"
-  if (this.gameOver === false) {
-    for (var x=0; x<this.objectBoard.length; x++){
-      string += "<tr class='row'>"
-      for (var y=0; y<this.objectBoard[x].length;y++){
-        string += "<td class='cell "
-        if (this.objectBoard[x][y]["status"] === "unclicked"){
-          string += "unclicked' id ='" + x + '' + y + "'>"
-        } else if (this.objectBoard[x][y]["status"] === "clicked") {
-          string += "clicked' id ='" + x + '' + y + "'>" + this.getSurroundingBombCount([x,y])
-        } else if (this.objectBoard[x][y]["status"] === "flagged"){
-          string += "flagged' id ='" + x + '' + y + "'>"
-        }
-        string += "</td>"
-      };
-      string += "</tr>"
+  for (var x=0; x<this.objectBoard.length; x++){
+    string += "<tr class='row'>"
+    for (var y=0; y<this.objectBoard[x].length;y++){
+      string += "<td class='cell "
+      if (this.objectBoard[x][y]["status"] === "unclicked"){
+        string += "unclicked' "
+      } else if (this.objectBoard[x][y]["status"] === "clicked") {
+        string += "clicked' "
+      } else if (this.objectBoard[x][y]["status"] === "flagged"){
+        string += "flagged' "
+      }
+      string += "id ='" + x + '' + y + "'></td>"
     };
-  } else {
-    string = "Game over, bitch"
+    string += "</tr>"
   };
   string += "</table>"
-  console.log(string)
   return string
 }
 
 Game.prototype.click = function(cell){
   x = cell[0]
   y = cell[1]
-  var self = this
+  console.log(x + ' / ' + y)
   this.objectBoard[x][y]["status"] = "clicked"
-  if (this.objectBoard[x][y]["bomb"]) {
-    this.gameOver = true
-    //show all bombs, alert, refresh
-  } else if (this.getSurroundingBombCount(cell) === 0){
-    console.log(this.getNeighbors(cell))
-    // var n = this.getNeighbors(cell)
-    // n.forEach(function(coord){ self.click(coord)})
-  } else {
-    console.log("there are bombs nearby")
-  }
-  console.log("clicked" + cell)
+  return this.objectBoard[x][y]["bomb"]
+  //if true, return array of all bomb cells
+  //else, count the amount of bombs surrounding that area
 }
 
 Game.prototype.flag = function(cell){
   x = cell[0]
   y = cell[1]
-  this.objectBoard[x][y]["status"] = "flagged"
+  if (this.objectBoard[x][y]["status"] !== "clicked"){
+    this.objectBoard[x][y]["status"] = "flagged"
+  }
 }
+
+Game.prototype.getBombCells = function() {}
 
 Game.prototype.getSurroundingBombCount = function(cell) {
   var board = this.objectBoard
@@ -94,7 +84,12 @@ Game.prototype.getSurroundingBombCount = function(cell) {
   if (this.inBounds(x-1, y-1) && board[x-1][y-1]["bomb"]) {
     count+=1
   }
-  return count
+  if (count === 0){
+    //recursively click surrounding boxes
+    return count
+  } else {
+    return count
+  }
 }
 
 Game.prototype.inBounds = function(x,y) {
@@ -126,21 +121,28 @@ var hashify = function(board) {
   return containerArray
 }
 
+var parseCellId = function(id) {
+  var x = parseInt(id[0])
+  var y = parseInt(id[1])
+  return [x,y]
+}
+
 Game.prototype.getNeighbors = function(index) {
   var x = parseInt(index[0])
   var y = parseInt(index[1])
   var directions = [[1,0], [1,1], [0,1], [-1,1], [-1, 0], [-1,-1], [0, -1], [1,-1]]
   var neighbors = []
   for (var i = 0; i < directions.length; i++) {
-    var neighborX = x + directions[i][0]
-    var neighborY = y +directions[i][1]
-    if (this.inBounds(neighborX, neighborY) && !this.objectBoard[neighborX][neighborY]["bomb"]){
-      neighbors.push([neighborX, neighborY])
+    if (this.inBounds(x + directions[i][0], y +directions[i][1])){
+      neighbors.push(directions[i])
     }
   };
   return neighbors
 }
 
-Game.prototype.clickNeighbors = function(index) {
-
+Game.prototype.clickNeighbors = function(cell, neighbors){
+  for (var i = 0; i < neighbors.length; i++) {
+    this.click([parseInt(cell[0]) + parseInt(neighbors[i][0]), parseInt(cell[1]) + parseInt(neighbors[i][1])])
+    console.log("yolo")
+  };
 }

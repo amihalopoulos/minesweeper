@@ -1,12 +1,11 @@
 table {
   margin: auto;
-  width: 400px;
-  height: 400px;
   table-layout: fixed;
 }
 td {
   border: 1px solid black;
-  height: 100px;
+  height: 50px;
+  width: 50px;
   text-align: center;
   border:1px solid #ccc;
   border-bottom:4px solid #bbb;
@@ -18,4 +17,7 @@ td {
 
 .bomb {
   background-image: url('http://image.shutterstock.com/display_pic_with_logo/1222298/134991800/stock-vector-comic-book-bomb-explosion-vector-illustration-134991800.jpg')
+}
+.flagged {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyD6AtiHqeH_sAfNNvTr1xq4xtTPOY7AYa2YD7C3gFtK9fLf1C')
 }

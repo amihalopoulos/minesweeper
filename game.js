@@ -63,34 +63,16 @@ Game.prototype = {
     this.objectBoard[x][y]["status"] = "flagged"
   },
   getSurroundingBombCount: function(cell) {
-    var board = this.objectBoard
     var x = parseInt(cell[0])
     var y = parseInt(cell[1])
+    var self = this
     var count = 0
-    if (this.inBounds(x+1, y) && board[x+1][y]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x+1, y-1) && board[x+1][y-1]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x+1, y+1) && board[x+1][y+1]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x, y+1) && board[x][y+1]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x, y-1) && board[x][y-1]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x-1, y) && board[x-1][y]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x-1, y+1) && board[x-1][y+1]["bomb"]) {
-      count+=1
-    }
-    if (this.inBounds(x-1, y-1) && board[x-1][y-1]["bomb"]) {
-      count+=1
-    }
+    var directions = [[1,0], [1,1], [0,1], [-1,1], [-1, 0], [-1,-1], [0, -1], [1,-1]]
+    directions.forEach(function(d){
+      if (self.inBounds(x+d[0], y+d[1]) && self.objectBoard[x+d[0]][y+d[1]]["bomb"]) {
+        count+=1
+      }
+    })
     return count
   },
   inBounds: function(x,y) {

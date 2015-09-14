@@ -2,15 +2,30 @@
 <html lang="en">
 <head>
 
-  <link rel="stylesheet" href="application.css">
-
+  <link rel="stylesheet" href="./application.css">
+  <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="game.js"></script>
-  <script src="application.js"></script>
+  <script src="./game.js"></script>
+  <script src="./application.js"></script>
 
   <title>Minesweeper</title>
 </head>
 <body>
+  <button class="button" id="beginner">Beginner</button>
+  <button class="button" id="intermediate">Intermediate</button>
+  <button class="button" id="expert">Expert</button>
+  <!--
+
+
+  Beginner: 8 × 8 or 9 × 9 field with 10 mines
+  Intermediate: 16 × 16 field with 40 mines
+  Expert: 30 × 16 field with 99 mines
+ -->
+  <div id="score">
+    <div id="clock"><label id="minutes">00</label>:<label id="seconds">00</label></div>
+
+    <button id="refresh"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-alP2iFlZDKLTmg2lfNYMWwGzvZWMMdVy82oFEL003HEA5yBp" id="face" alt=""></button>
+  </div>
   <div id="container"></div>
   <h1>Minesweeper</h1>
   <p>
